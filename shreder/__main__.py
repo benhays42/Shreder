@@ -77,7 +77,7 @@ class Shreder(Badges):
                     if not self.verbose:
                         self.print_process(
                             f"Processing... {line[counter]} | Passwords tried: {tried}/{str(len(threads))}", end=''
-                        )  # Dont show "passwords tried" dialogs as it prevents verbose info from getting displayed
+                        )  # Dont show "passwords tried" when verbose output is enabled
 
                     ssh_delay(self.ssh_delay)
                     thread.start()

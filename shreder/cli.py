@@ -41,6 +41,7 @@ class ShrederCLI(Shreder, Badges):
     parser.add_argument('-u', '--username', dest='username', help='SSH username.')
     parser.add_argument('-l', '--list', dest='list', help='Passwords list.')
     parser.add_argument('--verbose', dest='verbose', help='Set output to be verbose.', action="store_true", )
+    parser.add_argument('--logfile', dest='logfile', help='Set a file to log output to.')
     args = parser.parse_args()
 
     def start(self):
@@ -52,11 +53,18 @@ class ShrederCLI(Shreder, Badges):
             if not self.args.port:
                 self.args.port = 22
 
+            if self.args.logfile:
+                self.logfilehandler = open(self.args.logfile, "a")
+
             start = time.time()
-            self.print_information(f"Started At: {datetime.fromtimestamp(start)}")
+
             if not self.args.verbose:
                 self.args.verbose = False  # Default set to False
             self.verbose = self.args.verbose
+
+            if self.verbose:
+                self.print_information(f"Started At: {datetime.fromtimestamp(start)}")
+
             password = self.brute(
                 self.args.target,
                 self.args.port,
@@ -64,7 +72,8 @@ class ShrederCLI(Shreder, Badges):
                 self.args.list
             )
             end = time.time()
-            self.print_information(f"Ended At: {datetime.fromtimestamp(end)}")
+            if self.verbose:
+                self.print_information(f"Ended At: {datetime.fromtimestamp(end)}")
             if password:
                 self.print_success("Password has been found!")
                 self.print_information(f"Password: {password}")

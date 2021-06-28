@@ -25,26 +25,33 @@
 #
 
 class Badges:
-    @staticmethod
-    def print_empty(message="", end='\n'):
+    logfilehandler = None
+
+    def print_empty(self, message="", end='\n'):
+        if self.logfilehandler:
+            self.logfilehandler.write(message + end)
         print(f"\033[1K\r{message}", end=end)
 
     @staticmethod
     def print_process(message, end='\n'):
         print(f"\033[1K\r\033[1;34m[*]\033[0m {message}", end=end)
 
-    @staticmethod
-    def print_success(message, end='\n'):
+    def print_success(self, message, end='\n'):
+        if self.logfilehandler:
+            self.logfilehandler.write("[SUCCESS] " + message + end)
         print(f"\033[1K\r\033[1;32m[+]\033[0m {message}", end=end)
 
-    @staticmethod
-    def print_error(message, end='\n'):
+    def print_error(self, message, end='\n'):
+        if self.logfilehandler:
+            self.logfilehandler.write("[ERROR] " + message + end)
         print(f"\033[1K\r\033[1;31m[-]\033[0m {message}", end=end)
 
-    @staticmethod
-    def print_warning(message, end='\n'):
+    def print_warning(self, message, end='\n'):
+        if self.logfilehandler:
+            self.logfilehandler.write("[WARN] " + message + end)
         print(f"\033[1K\r\033[1;33m[!]\033[0m {message}", end=end)
 
-    @staticmethod
-    def print_information(message, end='\n'):
+    def print_information(self, message, end='\n'):
+        if self.logfilehandler:
+            self.logfilehandler.write("[INFO] " + message + end)
         print(f"\033[1K\r\033[1;77m[i]\033[0m {message}", end=end)
