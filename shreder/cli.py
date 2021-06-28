@@ -57,7 +57,7 @@ class ShrederCLI(Shreder, Badges):
                 self.logfilehandler = open(self.args.logfile, "a")
 
             start = time.time()
-
+            self.print_information("This tool is designed for educational purposes only.")  # Legal Disclaimer
             if not self.args.verbose:
                 self.args.verbose = False  # Default set to False
             self.verbose = self.args.verbose
