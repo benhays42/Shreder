@@ -34,6 +34,7 @@ from .badges import Badges
 class Shreder(Badges):
     password = None
     ssh_delay = 0.1
+    verbose = False
 
     def connect(self, host, port, username, password):
         ssh = paramiko.client.SSHClient()
@@ -42,7 +43,11 @@ class Shreder(Badges):
         try:
             ssh.connect(host, port=int(port), username=username, password=password)
             self.password = password
+            if self.verbose:
+                self.print_success(f"Login Successful W/ User:{username} Pass:{password}")
         except Exception:
+            if self.verbose:
+                self.print_information(f"Login Failed W/ User:{username} Pass:{password}")
             return
         ssh.close()
 
@@ -58,6 +63,7 @@ class Shreder(Badges):
                             target=self.connect,
                             args=[host, port, username, password]
                         )
+
                     )
 
             line = "/-\|"
@@ -68,9 +74,10 @@ class Shreder(Badges):
                 if not self.password:
                     if counter >= len(line):
                         counter = 0
-                    self.print_process(
-                        f"Processing... {line[counter]} | Passwords tried: {tried}/{str(len(threads))}", end=''
-                    )
+                    if not self.verbose:
+                        self.print_process(
+                            f"Processing... {line[counter]} | Passwords tried: {tried}/{str(len(threads))}", end=''
+                        )  # Dont show "passwords tried" dialogs as it prevents verbose info from getting displayed
 
                     ssh_delay(self.ssh_delay)
                     thread.start()
