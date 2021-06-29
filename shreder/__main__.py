@@ -52,9 +52,9 @@ class Shreder(Badges):
         ssh.close()
 
     def brute(self, host, port, username, dictionary):
-        with open(dictionary, 'r') as f:
+        with open(dictionary, 'rb') as f:
             threads = list()
-            lines = f.read().split('\n')
+            lines = f.read().decode("utf-8", errors="ignore").split('\n')
 
             for password in lines:
                 if password.strip():
